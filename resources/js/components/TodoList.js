@@ -6,21 +6,19 @@ export default function TodoList() {
     const dispatch = useDispatch();
     const todos = useSelector(state => state.todos);
 
-    const HandleCompleted = (in_id, in_completed) => {
+    const HandleCompleted = (id, completed) => {
         axios
-            .put(`/api/tasks/${in_id}`, { completed: !in_completed })
+            .put(`/api/tasks/${id}`, { completed: !completed })
             .then(res => {
-                console.log(res);
                 dispatch({ type: "TODO", payload: res.data });
             })
             .catch(err => console.log(err));
     };
 
-    const HandleDelete = in_id => {
+    const HandleDelete = id => {
         axios
-            .delete(`/api/tasks/${in_id}`)
+            .delete(`/api/tasks/${id}`)
             .then(res => {
-                console.log(res);
                 dispatch({ type: "TODO", payload: res.data });
             })
             .catch(err => console.log(err));
