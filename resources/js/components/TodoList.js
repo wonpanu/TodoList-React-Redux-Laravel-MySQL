@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 export default function TodoList() {
     const dispatch = useDispatch();
     const todos = useSelector(state => state.todos);
-    console.log("TodoList: ", todos);
+
+    const HandleCompleted = (in_id, in_completed) => {
+        axios
+            .put(`/api/tasks/${in_id}`, { completed: !in_completed })
+            .then(res => {
+                console.log(res);
+                dispatch({ type: "TODO", payload: res.data });
+            })
+            .catch(err => console.log(err));
+    };
+
+    const HandleDelete = in_id => {
+        axios
+            .delete(`/api/tasks/${in_id}`)
+            .then(res => {
+                console.log(res);
+                dispatch({ type: "TODO", payload: res.data });
+            })
+            .catch(err => console.log(err));
+    };
 
     return (
         <ul class="list-group" style={{ marginTop: "2%" }}>
@@ -33,10 +53,7 @@ export default function TodoList() {
                         xmlns="http://www.w3.org/2000/svg"
                         style={{ marginRight: "10px" }}
                         onClick={() =>
-                            dispatch({
-                                type: "TOGGLE_TODO",
-                                id: value.id
-                            })
+                            HandleCompleted(value.id, value.completed)
                         }
                     >
                         {!value.completed ? (
@@ -62,7 +79,7 @@ export default function TodoList() {
                             </svg>
                         )}
                     </svg>
-                    {value.todo}
+                    {value.title}
                     <span style={{ float: "right" }}>
                         <svg
                             class="bi bi-x-circle"
@@ -71,12 +88,7 @@ export default function TodoList() {
                             viewBox="0 0 16 16"
                             fill="currentColor"
                             xmlns="http://www.w3.org/2000/svg"
-                            onClick={() =>
-                                dispatch({
-                                    type: "DELETE_TODO",
-                                    id: value.id
-                                })
-                            }
+                            onClick={() => HandleDelete(value.id)}
                         >
                             <path
                                 fill-rule="evenodd"

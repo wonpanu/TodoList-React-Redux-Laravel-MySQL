@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 export default function AddTodo() {
     const dispatch = useDispatch();
-    const [id, setID] = useState(0);
     const [todo, setTodo] = useState("");
 
+    const HandleSubmit = e => {
+        e.preventDefault();
+        todo !== "" &&
+            axios
+                .post("/api/tasks", { title: todo })
+                .then(res => {
+                    console.log(res.data);
+                    dispatch({ type: "TODO", payload: res.data });
+                })
+                .catch(err => console.log(err));
+        setTodo("");
+    };
+
     return (
-        <form
-            class="form-inline"
-            onSubmit={e => {
-                e.preventDefault();
-                todo !== "" &&
-                    dispatch({ type: "ADD_TODO", id: id, payload: todo });
-                setID(id + 1);
-                setTodo("");
-            }}
-        >
+        <form class="form-inline" onSubmit={HandleSubmit}>
             <div class="form-group" style={{ alignItems: "stretch" }}>
                 <input
                     type="text"

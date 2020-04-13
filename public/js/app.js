@@ -72371,6 +72371,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -72385,31 +72387,34 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function AddTodo() {
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
 
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(""),
       _useState2 = _slicedToArray(_useState, 2),
-      id = _useState2[0],
-      setID = _useState2[1];
+      todo = _useState2[0],
+      setTodo = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(""),
-      _useState4 = _slicedToArray(_useState3, 2),
-      todo = _useState4[0],
-      setTodo = _useState4[1];
+  var HandleSubmit = function HandleSubmit(e) {
+    e.preventDefault();
+    todo !== "" && axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/tasks", {
+      title: todo
+    }).then(function (res) {
+      console.log(res.data);
+      dispatch({
+        type: "TODO",
+        payload: res.data
+      });
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+    setTodo("");
+  };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
     "class": "form-inline",
-    onSubmit: function onSubmit(e) {
-      e.preventDefault();
-      todo !== "" && dispatch({
-        type: "ADD_TODO",
-        id: id,
-        payload: todo
-      });
-      setID(id + 1);
-      setTodo("");
-    }
+    onSubmit: HandleSubmit
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     "class": "form-group",
     style: {
@@ -72536,10 +72541,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return HomePage; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _TodoListPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TodoListPage */ "./resources/js/components/TodoListPage.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _TodoListPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TodoListPage */ "./resources/js/components/TodoListPage.js");
+
+
 
 
 function HomePage() {
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
+  var pull = true;
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/tasks").then(function (res) {
+      dispatch({
+        type: "TODO",
+        payload: res.data
+      });
+      console.log("pull");
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  }, [pull]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     "class": "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -72548,7 +72571,7 @@ function HomePage() {
     "class": "col"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     "class": "col-10"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoListPage__WEBPACK_IMPORTED_MODULE_1__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoListPage__WEBPACK_IMPORTED_MODULE_3__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     "class": "col"
   })));
 }
@@ -72608,6 +72631,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 function TodoList() {
@@ -72615,7 +72641,33 @@ function TodoList() {
   var todos = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(function (state) {
     return state.todos;
   });
-  console.log("TodoList: ", todos);
+
+  var HandleCompleted = function HandleCompleted(in_id, in_completed) {
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a.put("/api/tasks/".concat(in_id), {
+      completed: !in_completed
+    }).then(function (res) {
+      console.log(res);
+      dispatch({
+        type: "TODO",
+        payload: res.data
+      });
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  };
+
+  var HandleDelete = function HandleDelete(in_id) {
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/api/tasks/".concat(in_id)).then(function (res) {
+      console.log(res);
+      dispatch({
+        type: "TODO",
+        payload: res.data
+      });
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     "class": "list-group",
     style: {
@@ -72639,10 +72691,7 @@ function TodoList() {
         marginRight: "10px"
       },
       onClick: function onClick() {
-        return dispatch({
-          type: "TOGGLE_TODO",
-          id: value.id
-        });
+        return HandleCompleted(value.id, value.completed);
       }
     }, !value.completed ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
       "fill-rule": "evenodd",
@@ -72656,7 +72705,7 @@ function TodoList() {
       "fill-rule": "evenodd",
       d: "M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z",
       "clip-rule": "evenodd"
-    }))), value.todo, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    }))), value.title, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
       style: {
         "float": "right"
       }
@@ -72668,10 +72717,7 @@ function TodoList() {
       fill: "currentColor",
       xmlns: "http://www.w3.org/2000/svg",
       onClick: function onClick() {
-        return dispatch({
-          type: "DELETE_TODO",
-          id: value.id
-        });
+        return HandleDelete(value.id);
       }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
       "fill-rule": "evenodd",
@@ -72733,18 +72779,6 @@ function TodoListPage() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return rootReducer; });
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -72759,30 +72793,9 @@ function rootReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case "ADD_TODO":
+    case "TODO":
       return _objectSpread({}, state, {
-        todos: [].concat(_toConsumableArray(state.todos), [{
-          id: action.id,
-          todo: action.payload,
-          completed: false
-        }])
-      });
-
-    case "TOGGLE_TODO":
-      return _objectSpread({}, state, {
-        todos: state.todos.map(function (todo) {
-          return todo.id === action.id ? _objectSpread({}, todo, {
-            completed: !todo.completed
-          }) : todo;
-        })
-      });
-
-    case "DELETE_TODO":
-      var newState = state.todos.filter(function (todo) {
-        return todo.id !== action.id;
-      });
-      return _objectSpread({}, state, {
-        todos: newState
+        todos: action.payload
       });
 
     default:
