@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import TodoListPage from "./TodoListPage";
+import TodoListPage from "../TodoListPage/TodoListPage";
 
 export default function HomePage() {
     const dispatch = useDispatch();
