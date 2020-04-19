@@ -1,11 +1,47 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function RegisterPage() {
-    const [firstName, setFirstName] = useState(null);
-    const [lastName, setLastName] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [values, setValues] = useState({
+        fullName: "",
+        email: "",
+        password: "",
+        waiting: false
+    });
+    console.log("Input: ", values);
+
+    const handleChange = prop => event => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        const request = values.fullName && values.email && values.password;
+        if (request) {
+            setValues({ ...values, waiting: true });
+            axios
+                .post("/api/signup", {
+                    firstName: values.fullName.split(" ")[0],
+                    lastName: values.fullName.split(" ")[1],
+                    email: values.email,
+                    password: values.password
+                })
+                .then(res => {
+                    console.log(res);
+                    setValues({
+                        fullName: "",
+                        email: "",
+                        password: "",
+                        waiting: false
+                    });
+                })
+                .catch(err => {
+                    alert(err);
+                    setValues({ ...values, waiting: false });
+                });
+        }
+    };
 
     return (
         <div
@@ -23,7 +59,10 @@ export default function RegisterPage() {
                             <div class="card-body" style={{ margin: "5vh" }}>
                                 <h1 class="card-title">Create Account</h1>
                                 <br />
-                                <form name="form-signup">
+                                <form
+                                    name="form-signup"
+                                    onSubmit={handleSubmit}
+                                >
                                     <div class="form-label-group">
                                         <label
                                             for="inputFullName"
@@ -56,6 +95,10 @@ export default function RegisterPage() {
                                                 class="form-control"
                                                 placeholder="Full name"
                                                 required
+                                                value={values.fullName}
+                                                onChange={handleChange(
+                                                    "fullName"
+                                                )}
                                             />
                                         </div>
                                     </div>
@@ -99,6 +142,8 @@ export default function RegisterPage() {
                                                 placeholder="Email address"
                                                 required
                                                 autofocus
+                                                value={values.email}
+                                                onChange={handleChange("email")}
                                             />
                                         </div>
                                     </div>
@@ -135,6 +180,10 @@ export default function RegisterPage() {
                                                 class="form-control"
                                                 placeholder="Password"
                                                 required
+                                                value={values.password}
+                                                onChange={handleChange(
+                                                    "password"
+                                                )}
                                             />
                                         </div>
                                         <small
@@ -150,8 +199,24 @@ export default function RegisterPage() {
                                     </div>
                                     <br />
                                     <div className="form-label-group">
-                                        <button className="btn btn-primary">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary"
+                                        >
                                             Sign up
+                                            {values.waiting && (
+                                                <div
+                                                    class="spinner-border spinner-border-sm"
+                                                    role="status"
+                                                    style={{
+                                                        marginLeft: "2vh"
+                                                    }}
+                                                >
+                                                    <span class="sr-only">
+                                                        Loading...
+                                                    </span>
+                                                </div>
+                                            )}
                                         </button>
                                         <Link
                                             to="/signin"
