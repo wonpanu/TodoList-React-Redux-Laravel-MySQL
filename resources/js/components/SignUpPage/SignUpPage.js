@@ -21,7 +21,7 @@ export default function RegisterPage() {
                     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                         <div class="card ">
                             <div class="card-body" style={{ margin: "5vh" }}>
-                                <h1 class="card-title">Create New Account</h1>
+                                <h1 class="card-title">Create Account</h1>
                                 <br />
                                 <form name="form-signup">
                                     <div class="form-label-group">
