@@ -72740,19 +72740,19 @@ function RegisterPage() {
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
-    var request = values.fullName && values.email && values.password;
+    var request = values.fullName && values.email && values.password && true;
 
     if (request) {
       setValues(_objectSpread({}, values, {
         waiting: true
       }));
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/signup", {
-        firstName: values.fullName.split(" ")[0],
-        lastName: values.fullName.split(" ")[1],
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/users", {
+        first_name: values.fullName.split(" ")[0],
+        last_name: values.fullName.split(" ")[1],
         email: values.email,
         password: values.password
       }).then(function (res) {
-        console.log(res);
+        console.log("Register success: ", res);
         setValues({
           fullName: "",
           email: "",
@@ -72760,6 +72760,7 @@ function RegisterPage() {
           waiting: false
         });
       })["catch"](function (err) {
+        console.log("Error: ", err);
         alert(err);
         setValues(_objectSpread({}, values, {
           waiting: false
@@ -73169,6 +73170,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var initialState = {
+  auth: false,
   todos: []
 };
 function rootReducer() {
@@ -73176,6 +73178,11 @@ function rootReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case "AUTH":
+      return _objectSpread({}, state, {
+        auth: !state.auth
+      });
+
     case "TODO":
       return _objectSpread({}, state, {
         todos: action.payload

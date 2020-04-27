@@ -17,18 +17,19 @@ export default function RegisterPage() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        const request = values.fullName && values.email && values.password;
+        const request = values.fullName && values.email && values.password && true;
+
         if (request) {
             setValues({ ...values, waiting: true });
             axios
-                .post("/api/signup", {
-                    firstName: values.fullName.split(" ")[0],
-                    lastName: values.fullName.split(" ")[1],
+                .post("/api/users", {
+                    first_name: values.fullName.split(" ")[0],
+                    last_name: values.fullName.split(" ")[1],
                     email: values.email,
                     password: values.password
                 })
                 .then(res => {
-                    console.log(res);
+                    console.log("Register success: ",res);
                     setValues({
                         fullName: "",
                         email: "",
@@ -37,6 +38,7 @@ export default function RegisterPage() {
                     });
                 })
                 .catch(err => {
+                    console.log("Error: ",err);
                     alert(err);
                     setValues({ ...values, waiting: false });
                 });
