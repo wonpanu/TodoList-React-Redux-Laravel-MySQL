@@ -1,7 +1,49 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
 export default function LoginPage() {
+    const dispatch = useDispatch();
+    const [values, setValues] = useState({
+        email: "",
+        password: "",
+        waiting: false,
+        success: false
+    });
+    console.log("login: ", values);
+
+    const handleChange = prop => event => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        const request = values.email && values.password && true;
+
+        if (request) {
+            dispatch({ type: "Signin" });
+            setValues({ ...values, waiting: true });
+            axios
+                .get("/api/users", {
+                    email: values.email,
+                    password: values.password
+                })
+                .then(res => {
+                    setValues({
+                        email: "",
+                        password: "",
+                        waiting: false,
+                        success: true
+                    });
+                })
+                .catch(err => {
+                    alert(err);
+                    setValues({ ...values, waiting: false });
+                });
+        }
+    };
+
     return (
         <div
             class="jumbotron-fluid"
@@ -18,7 +60,10 @@ export default function LoginPage() {
                             <div class="card-body" style={{ margin: "5vh" }}>
                                 <h1 class="card-title text-center">Welcome</h1>
                                 <br />
-                                <form class="form-signin">
+                                <form
+                                    class="form-signin"
+                                    onSubmit={handleSubmit}
+                                >
                                     <div class="form-label-group">
                                         <label
                                             for="inputEmail "
@@ -58,6 +103,8 @@ export default function LoginPage() {
                                                 placeholder="Email address"
                                                 required
                                                 autofocus
+                                                value={values.email}
+                                                onChange={handleChange("email")}
                                             />
                                         </div>
                                     </div>
@@ -94,6 +141,10 @@ export default function LoginPage() {
                                                 class="form-control"
                                                 placeholder="Password"
                                                 required
+                                                value={values.password}
+                                                onChange={handleChange(
+                                                    "password"
+                                                )}
                                             />
                                         </div>
                                     </div>
@@ -114,6 +165,22 @@ export default function LoginPage() {
                                     <div className="form-label-group">
                                         <button className="btn btn-primary">
                                             Sign in
+                                            {values.waiting && (
+                                                <div
+                                                    class="spinner-border spinner-border-sm"
+                                                    role="status"
+                                                    style={{
+                                                        marginLeft: "2vh"
+                                                    }}
+                                                >
+                                                    <span class="sr-only">
+                                                        Loading...
+                                                    </span>
+                                                </div>
+                                            )}
+                                            {values.success && (
+                                                <Redirect to="/todolist" />
+                                            )}
                                         </button>
                                         <span style={{ marginLeft: "2vh" }}>
                                             No account?

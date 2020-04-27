@@ -1,11 +1,12 @@
 const initialState = {
-    auth:false,
+    auth: false,
     todos: []
 };
 
 export default function rootReducer(state = initialState, action) {
     switch (action.type) {
-        case "AUTH": return {...state, auth: !state.auth};
+        case "Signin":
+            return { ...state, auth: true };
         case "TODO":
             return {
                 ...state,

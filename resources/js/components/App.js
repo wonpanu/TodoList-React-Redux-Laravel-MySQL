@@ -10,7 +10,6 @@ import SignInPage from "./SignInPage/SignInPage";
 import SignUpPage from "./SignUpPage/SignUpPage";
 
 const store = createStore(rootReducer);
-const auth = false;
 
 class App extends Component {
     render() {
@@ -21,12 +20,11 @@ class App extends Component {
                         <Route
                             exact
                             path="/"
-                            render={() =>
-                                auth ? <HomePage /> : <Redirect to="/signin" />
-                            }
+                            render={() => <Redirect to="/signin" />}
                         />
                         <Route path="/signin" render={() => <SignInPage />} />
                         <Route path="/signup" render={() => <SignUpPage />} />
+                        <Route path="/todolist" render={() => <HomePage />} />
                         <Route render={() => <PageNotFound />} />
                     </Switch>
                 </Provider>

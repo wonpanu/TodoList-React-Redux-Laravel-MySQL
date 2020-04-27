@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 export default function RegisterPage() {
+    const dispatch = useDispatch();
     const [values, setValues] = useState({
         fullName: "",
         email: "",
         password: "",
-        waiting: false
+        waiting: false,
+        success: false
     });
-    console.log("Input: ", values);
+    console.log("register: ", values);
 
     const handleChange = prop => event => {
         setValues({ ...values, [prop]: event.target.value });
@@ -17,9 +20,11 @@ export default function RegisterPage() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        const request = values.fullName && values.email && values.password && true;
+        const request =
+            values.fullName && values.email && values.password && true;
 
         if (request) {
+            dispatch({ type: "Signin" });
             setValues({ ...values, waiting: true });
             axios
                 .post("/api/users", {
@@ -29,16 +34,15 @@ export default function RegisterPage() {
                     password: values.password
                 })
                 .then(res => {
-                    console.log("Register success: ",res);
                     setValues({
                         fullName: "",
                         email: "",
                         password: "",
-                        waiting: false
+                        waiting: false,
+                        success: true
                     });
                 })
                 .catch(err => {
-                    console.log("Error: ",err);
                     alert(err);
                     setValues({ ...values, waiting: false });
                 });
@@ -218,6 +222,9 @@ export default function RegisterPage() {
                                                         Loading...
                                                     </span>
                                                 </div>
+                                            )}
+                                            {values.success && (
+                                                <Redirect to="/todolist" />
                                             )}
                                         </button>
                                         <Link

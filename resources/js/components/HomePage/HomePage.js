@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import TodoListPage from "../TodoListPage/TodoListPage";
+import { Redirect } from "react-router-dom";
 
 export default function HomePage() {
     const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth);
     const pull = true;
 
     useEffect(() => {
@@ -21,6 +23,7 @@ export default function HomePage() {
             <div class="row">
                 <div class="col" />
                 <div class="col-10">
+                    {!auth && <Redirect to="/signin" />}
                     <TodoListPage />
                 </div>
                 <div class="col" />

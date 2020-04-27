@@ -14,12 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('users', 'RegistrationController@index');
-Route::get('users/{id}', 'RegistrationController@show');
-Route::post('users', 'RegistrationController@store');
-Route::put('users/{id}', 'RegistrationController@update');
-Route::delete('users/{id}', 'RegistrationController@delete');
+// Sign in
+Route::post('signin', 'SessionController@store');
 
+// Sign up
+Route::post('signup', 'RegistrationController@store');
+
+// User
+Route::put('user/update/{id}', 'UserController@update');
+Route::delete('user/delete/{id}', 'UserController@delete');
+
+// Todo-list
 Route::get('tasks', 'TaskController@index');
 Route::get('tasks/{id}', 'TaskController@show');
 Route::post('tasks', 'TaskController@store');
