@@ -72634,7 +72634,7 @@ function LoginPage() {
         email: values.email,
         password: values.password
       }).then(function (res) {
-        values.remember && localStorage.setItem("access_token", res.data.access_token);
+        values.remember ? localStorage.setItem("access_token", res.data.access_token) : sessionStorage.setItem("access_token", res.data.access_token);
         dispatch({
           type: "SIGNIN"
         });

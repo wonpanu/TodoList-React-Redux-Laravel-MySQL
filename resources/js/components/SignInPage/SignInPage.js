@@ -34,11 +34,15 @@ export default function LoginPage() {
                     password: values.password
                 })
                 .then(res => {
-                    values.remember &&
-                        localStorage.setItem(
-                            "access_token",
-                            res.data.access_token
-                        );
+                    values.remember
+                        ? localStorage.setItem(
+                              "access_token",
+                              res.data.access_token
+                          )
+                        : sessionStorage.setItem(
+                              "access_token",
+                              res.data.access_token
+                          );
                     dispatch({ type: "SIGNIN" });
                     setValues({
                         ...values,
