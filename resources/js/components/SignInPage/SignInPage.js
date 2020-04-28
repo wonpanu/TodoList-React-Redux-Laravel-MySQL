@@ -165,8 +165,8 @@ export default function LoginPage() {
                                             />
                                         </div>
                                     </div>
-                                    {/* <br />
-                                    <div class="custom-control custom-checkbox mb-3">
+                                    <br />
+                                    {/* <div class="custom-control custom-checkbox mb-3">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input"
@@ -181,7 +181,6 @@ export default function LoginPage() {
                                             Remember me
                                         </label>
                                     </div> */}
-                                    <br />
                                     <div className="form-label-group">
                                         <button className="btn btn-primary">
                                             Sign in

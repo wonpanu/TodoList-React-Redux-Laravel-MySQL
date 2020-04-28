@@ -34,7 +34,10 @@ export default function TodoListPage() {
         <div>
             <h1 style={{ margin: "4%", fontWeight: "bold" }}>
                 Todo list
-                <Link style={{ margin: 30 }} onClick={HandleClick}>
+                <Link
+                    style={{ margin: 30, textDecoration: "underline" }}
+                    onClick={HandleClick}
+                >
                     logout
                     {!auth && <Redirect to="/" />}
                 </Link>
