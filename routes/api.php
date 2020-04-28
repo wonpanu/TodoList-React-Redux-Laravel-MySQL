@@ -18,14 +18,15 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'AuthController@login');
 
 // Sign out
-Route::post('logout', 'AuthController@logout');
+Route::get('logout', 'AuthController@logout');
 
 // Sign up
 Route::post('register', 'AuthController@register');
 
 // User
-Route::put('user/update/{id}', 'UserController@update');
-Route::delete('user/delete/{id}', 'UserController@delete');
+Route::get('user', 'AuthController@getAuthUser');
+// Route::put('user/update/{id}', 'UserController@update');
+// Route::delete('user/delete/{id}', 'UserController@delete');
 
 // Todo-list
 Route::get('tasks', 'TaskController@index');

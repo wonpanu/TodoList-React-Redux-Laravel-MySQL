@@ -8,13 +8,15 @@ use App\User;
 
 class AuthController extends Controller
 {
+    public $loginAfterSignUp = true;
+
     public function register(Request $request)
     {
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email'    => $request->email,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
         ]);
 
         $token = auth()->login($user);
@@ -33,10 +35,14 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function getAuthUser(Request $request)
+    {
+        return response()->json(auth()->user());
+    }
+
     public function logout()
     {
         auth()->logout();
-
         return response()->json(['message' => 'Successfully logged out']);
     }
 
@@ -44,8 +50,8 @@ class AuthController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => auth()->factory()->getTTL() * 60
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 }

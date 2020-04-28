@@ -40,16 +40,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    /**
-     * Add a mutator to ensure hashed passwords
-     */
-    public function setPasswordAttribute($password)
-    {
-        if (!empty($password)) {
-            $this->attributes['password'] = bcrypt($password);
-        }
-    }
-
     public function tasks()
     {
         return $this->hasMany(Task::class);
