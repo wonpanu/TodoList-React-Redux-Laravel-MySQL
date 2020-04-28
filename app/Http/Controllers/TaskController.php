@@ -7,16 +7,6 @@ use App\Task;
 
 class TaskController extends Controller
 {
-    public function index()
-    {
-        return Task::all();
-    }
-
-    public function show($id)
-    {
-        return Task::find($id);
-    }
-
     public function store(Request $request)
     {
         Task::create([
