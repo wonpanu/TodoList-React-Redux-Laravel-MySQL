@@ -15,10 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Sign in
-Route::post('signin', 'SessionController@store');
+Route::post('login', 'AuthController@login');
+
+// Sign out
+Route::post('logout', 'AuthController@logout');
 
 // Sign up
-Route::post('signup', 'RegistrationController@store');
+Route::post('register', 'AuthController@register');
 
 // User
 Route::put('user/update/{id}', 'UserController@update');

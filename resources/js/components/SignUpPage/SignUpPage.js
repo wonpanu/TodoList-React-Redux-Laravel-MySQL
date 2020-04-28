@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 export default function RegisterPage() {
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ export default function RegisterPage() {
             dispatch({ type: "SIGNIN" });
             setValues({ ...values, waiting: true });
             axios
-                .post("/api/signup", {
+                .post("/api/register", {
                     first_name: values.fullName.split(" ")[0],
                     last_name: values.fullName.split(" ")[1],
                     email: values.email,

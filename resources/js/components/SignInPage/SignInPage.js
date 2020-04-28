@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 export default function LoginPage() {
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export default function LoginPage() {
         if (request) {
             setValues({ ...values, waiting: true });
             axios
-                .post("/api/signin", {
+                .post("/api/login", {
                     email: values.email,
                     password: values.password
                 })
