@@ -24,10 +24,10 @@ export default function RegisterPage() {
             values.fullName && values.email && values.password && true;
 
         if (request) {
-            dispatch({ type: "Signin" });
+            dispatch({ type: "SIGNIN" });
             setValues({ ...values, waiting: true });
             axios
-                .post("/api/users", {
+                .post("/api/signup", {
                     first_name: values.fullName.split(" ")[0],
                     last_name: values.fullName.split(" ")[1],
                     email: values.email,

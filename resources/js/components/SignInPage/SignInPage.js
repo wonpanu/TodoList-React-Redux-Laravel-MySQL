@@ -22,10 +22,10 @@ export default function LoginPage() {
         const request = values.email && values.password && true;
 
         if (request) {
-            dispatch({ type: "Signin" });
+            dispatch({ type: "SIGNIN" });
             setValues({ ...values, waiting: true });
             axios
-                .get("/api/users", {
+                .get("/api/signin", {
                     email: values.email,
                     password: values.password
                 })
