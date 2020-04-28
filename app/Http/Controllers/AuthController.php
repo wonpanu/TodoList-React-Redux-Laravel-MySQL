@@ -8,8 +8,6 @@ use App\User;
 
 class AuthController extends Controller
 {
-    public $loginAfterSignUp = true;
-
     public function register(Request $request)
     {
         $user = User::create([
