@@ -72626,24 +72626,30 @@ function LoginPage() {
     var request = values.email && values.password && true;
 
     if (request) {
-      dispatch({
-        type: "Signin"
-      });
       setValues(_objectSpread({}, values, {
         waiting: true
       }));
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/users", {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/signin", {
         email: values.email,
         password: values.password
       }).then(function (res) {
+        console.log("res@login: ", res);
+
+        if (res.data === "Welcome") {
+          dispatch({
+            type: "SIGNIN"
+          });
+        } else {
+          alert(res.data);
+        }
+
         setValues({
           email: "",
           password: "",
           waiting: false,
-          success: true
+          success: res.data === "Welcome" && true
         });
       })["catch"](function (err) {
-        alert(err);
         setValues(_objectSpread({}, values, {
           waiting: false
         }));
@@ -72848,12 +72854,12 @@ function RegisterPage() {
 
     if (request) {
       dispatch({
-        type: "Signin"
+        type: "SIGNIN"
       });
       setValues(_objectSpread({}, values, {
         waiting: true
       }));
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/users", {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/signup", {
         first_name: values.fullName.split(" ")[0],
         last_name: values.fullName.split(" ")[1],
         email: values.email,
@@ -73241,22 +73247,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TodoListPage; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _AddTodo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddTodo */ "./resources/js/components/TodoListPage/AddTodo.js");
-/* harmony import */ var _TodoList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TodoList */ "./resources/js/components/TodoListPage/TodoList.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _AddTodo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AddTodo */ "./resources/js/components/TodoListPage/AddTodo.js");
+/* harmony import */ var _TodoList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TodoList */ "./resources/js/components/TodoListPage/TodoList.js");
+
+
 
 
 
 function TodoListPage() {
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
     style: {
       margin: "4%",
       fontWeight: "bold"
     }
-  }, "Todo list"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, "Todo list", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+    to: "/",
+    style: {
+      margin: 30
+    },
+    onClick: function onClick() {
+      return dispatch({
+        type: "SIGNOUT"
+      });
+    }
+  }, "logout")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
       margin: "0% 0% 10% 10%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AddTodo__WEBPACK_IMPORTED_MODULE_1__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoList__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AddTodo__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoList__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
 }
 
 /***/ }),
@@ -73286,9 +73307,14 @@ function rootReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case "Signin":
+    case "SIGNIN":
       return _objectSpread({}, state, {
         auth: true
+      });
+
+    case "SIGNOUT":
+      return _objectSpread({}, state, {
+        auth: false
       });
 
     case "TODO":

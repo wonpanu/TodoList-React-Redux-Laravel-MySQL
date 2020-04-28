@@ -22,23 +22,27 @@ export default function LoginPage() {
         const request = values.email && values.password && true;
 
         if (request) {
-            dispatch({ type: "SIGNIN" });
             setValues({ ...values, waiting: true });
             axios
-                .get("/api/signin", {
+                .post("/api/signin", {
                     email: values.email,
                     password: values.password
                 })
                 .then(res => {
+                    console.log("res@login: ", res);
+                    if (res.data === "Welcome") {
+                        dispatch({ type: "SIGNIN" });
+                    } else {
+                        alert(res.data);
+                    }
                     setValues({
                         email: "",
                         password: "",
                         waiting: false,
-                        success: true
+                        success: res.data === "Welcome" && true
                     });
                 })
                 .catch(err => {
-                    alert(err);
                     setValues({ ...values, waiting: false });
                 });
         }
