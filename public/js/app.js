@@ -73268,7 +73268,7 @@ function TodoListPage() {
         Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
       }
     }).then(function (res) {
-      alert(res);
+      alert(res.data.message);
       dispatch({
         type: "SIGNOUT"
       });
