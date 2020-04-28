@@ -64,22 +64,22 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ## Docker
 
-## build
+### build
 
 $ chmod +x build.sh
 $ ./bulid.sh
 
-## start
+### start
 
 $ chmod +x start.sh
 $ ./start.sh
 
-## stop
+### stop
 
 $ chmod +x stop.sh
 $ ./stop.sh
 
-## clear cache
+### clear cache
 
 $ chmod +x clear.sh
 $ ./clear.sh
