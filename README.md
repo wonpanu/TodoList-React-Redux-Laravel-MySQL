@@ -66,23 +66,23 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ### build
 
-1. \$ chmod +x build.sh
-2. \$ ./bulid.sh
+<div>$ chmod +x build.sh</div>
+<div>$ ./bulid.sh</div>
 
 ### start
 
-1. \$ chmod +x start.sh
-2. \$ ./start.sh
+<div>$ chmod +x start.sh</div>
+<div>$ ./start.sh</div>
 
 ### stop
 
-1. \$ chmod +x stop.sh
-2. \$ ./stop.sh
+<div>$ chmod +x stop.sh</div>
+<div>$ ./stop.sh</div>
 
 ### clear cache
 
-1. \$ chmod +x clear.sh
-2. \$ ./clear.sh
+<div>$ chmod +x clear.sh</div>
+<div>$ ./clear.sh</div>
 
 ## Contributing
 
