@@ -72606,7 +72606,7 @@ function LoginPage() {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
     email: "",
     password: "",
-    remember: false,
+    // remember: false,
     waiting: false,
     auth: false
   }),
@@ -72632,7 +72632,13 @@ function LoginPage() {
         email: values.email,
         password: values.password
       }).then(function (res) {
-        values.remember ? localStorage.setItem("access_token", res.data.access_token) : sessionStorage.setItem("access_token", res.data.access_token);
+        // values.remember
+        //     ? localStorage.setItem(
+        //           "access_token",
+        //           res.data.access_token
+        //       )
+        //     :
+        sessionStorage.setItem("access_token", res.data.access_token);
         dispatch({
           type: "SIGNIN"
         });
@@ -72748,17 +72754,6 @@ function LoginPage() {
     value: values.password,
     onChange: handleChange("password")
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "custom-control custom-checkbox mb-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "checkbox",
-    "class": "custom-control-input",
-    id: "customCheck1",
-    checked: values.remember,
-    onChange: handleChange("remember")
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    "class": "custom-control-label",
-    "for": "customCheck1"
-  }, "Remember me")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-label-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-primary"
@@ -73077,7 +73072,10 @@ function AddTodo() {
         title: todo
       },
       headers: {
-        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+        Authorization: // localStorage.getItem("access_token")
+        //     ? `Bearer ${localStorage.getItem("access_token")}`
+        //     :
+        "Bearer ".concat(sessionStorage.getItem("access_token"))
       }
     }).then(function (res) {
       dispatch({
@@ -73151,7 +73149,10 @@ function TodoList() {
         completed: !completed
       },
       headers: {
-        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+        Authorization: // localStorage.getItem("access_token")
+        //     ? `Bearer ${localStorage.getItem("access_token")}`
+        //     :
+        "Bearer ".concat(sessionStorage.getItem("access_token"))
       }
     }).then(function (res) {
       if (res.data.message === "Permission denied") {
@@ -73172,7 +73173,10 @@ function TodoList() {
       method: "DELETE",
       url: "/api/tasks/".concat(id),
       headers: {
-        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+        Authorization: // localStorage.getItem("access_token")
+        //     ? `Bearer ${localStorage.getItem("access_token")}`
+        //     :
+        "Bearer ".concat(sessionStorage.getItem("access_token"))
       }
     }).then(function (res) {
       if (res.data.message === "Permission denied") {
@@ -73290,7 +73294,10 @@ function TodoListPage() {
   var HandleClick = function HandleClick() {
     axios__WEBPACK_IMPORTED_MODULE_5___default.a.get("/api/logout", {
       headers: {
-        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+        Authorization: // localStorage.getItem("access_token")
+        //     ? `Bearer ${localStorage.getItem("access_token")}`
+        //     :
+        "Bearer ".concat(sessionStorage.getItem("access_token"))
       }
     }).then(function (res) {
       alert(res.data.message);
@@ -73342,7 +73349,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var initialState = {
-  auth:  false || localStorage.getItem("access_token"),
+  auth:  false || sessionStorage.getItem("access_token"),
   todos: []
 };
 function rootReducer() {

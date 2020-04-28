@@ -7,6 +7,11 @@ use App\Task;
 
 class TaskController extends Controller
 {
+    public function show()
+    {
+        return Task::all();
+    }
+
     public function store(Request $request)
     {
         Task::create([

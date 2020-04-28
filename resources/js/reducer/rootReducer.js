@@ -1,5 +1,5 @@
 const initialState = {
-    auth: false || localStorage.getItem("access_token"),
+    auth: false || sessionStorage.getItem("access_token"),
     todos: []
 };
 

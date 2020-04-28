@@ -8,7 +8,7 @@ export default function LoginPage() {
     const [values, setValues] = useState({
         email: "",
         password: "",
-        remember: false,
+        // remember: false,
         waiting: false,
         auth: false
     });
@@ -33,15 +33,16 @@ export default function LoginPage() {
                     password: values.password
                 })
                 .then(res => {
-                    values.remember
-                        ? localStorage.setItem(
-                              "access_token",
-                              res.data.access_token
-                          )
-                        : sessionStorage.setItem(
-                              "access_token",
-                              res.data.access_token
-                          );
+                    // values.remember
+                    //     ? localStorage.setItem(
+                    //           "access_token",
+                    //           res.data.access_token
+                    //       )
+                    //     :
+                    sessionStorage.setItem(
+                        "access_token",
+                        res.data.access_token
+                    );
                     dispatch({ type: "SIGNIN" });
                     setValues({
                         ...values,
@@ -164,7 +165,7 @@ export default function LoginPage() {
                                             />
                                         </div>
                                     </div>
-                                    <br />
+                                    {/* <br />
                                     <div class="custom-control custom-checkbox mb-3">
                                         <input
                                             type="checkbox"
@@ -179,7 +180,8 @@ export default function LoginPage() {
                                         >
                                             Remember me
                                         </label>
-                                    </div>
+                                    </div> */}
+                                    <br />
                                     <div className="form-label-group">
                                         <button className="btn btn-primary">
                                             Sign in
