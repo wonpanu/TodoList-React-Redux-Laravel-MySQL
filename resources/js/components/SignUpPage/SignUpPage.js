@@ -10,7 +10,7 @@ export default function RegisterPage() {
         email: "",
         password: "",
         waiting: false,
-        success: false
+        auth: false
     });
     console.log("register: ", values);
 
@@ -34,12 +34,13 @@ export default function RegisterPage() {
                     password: values.password
                 })
                 .then(res => {
+                    console.log("res@register: ", res);
                     setValues({
                         fullName: "",
                         email: "",
                         password: "",
                         waiting: false,
-                        success: true
+                        auth: true
                     });
                 })
                 .catch(err => {
@@ -223,7 +224,7 @@ export default function RegisterPage() {
                                                     </span>
                                                 </div>
                                             )}
-                                            {values.success && (
+                                            {values.auth && (
                                                 <Redirect to="/todolist" />
                                             )}
                                         </button>

@@ -8,13 +8,18 @@ export default function LoginPage() {
     const [values, setValues] = useState({
         email: "",
         password: "",
+        remember: false,
         waiting: false,
-        success: false
+        auth: false
     });
     console.log("login: ", values);
 
     const handleChange = prop => event => {
-        setValues({ ...values, [prop]: event.target.value });
+        setValues({
+            ...values,
+            [prop]:
+                prop === "remember" ? event.target.checked : event.target.value
+        });
     };
 
     const handleSubmit = e => {
@@ -29,20 +34,24 @@ export default function LoginPage() {
                     password: values.password
                 })
                 .then(res => {
-                    console.log("res@login: ", res);
-                    if (res.data === "Welcome") {
-                        dispatch({ type: "SIGNIN" });
-                    } else {
-                        alert(res.data);
-                    }
+                    values.remember &&
+                        localStorage.setItem(
+                            "access_token",
+                            res.data.access_token
+                        );
+                    dispatch({ type: "SIGNIN" });
                     setValues({
+                        ...values,
                         email: "",
                         password: "",
                         waiting: false,
-                        success: res.data === "Welcome" && true
+                        auth: true
                     });
                 })
                 .catch(err => {
+                    alert(
+                        "Your email or password was incorrect, please try again."
+                    );
                     setValues({ ...values, waiting: false });
                 });
         }
@@ -158,6 +167,8 @@ export default function LoginPage() {
                                             type="checkbox"
                                             class="custom-control-input"
                                             id="customCheck1"
+                                            checked={values.remember}
+                                            onChange={handleChange("remember")}
                                         />
                                         <label
                                             class="custom-control-label"
@@ -182,7 +193,7 @@ export default function LoginPage() {
                                                     </span>
                                                 </div>
                                             )}
-                                            {values.success && (
+                                            {values.auth && (
                                                 <Redirect to="/todolist" />
                                             )}
                                         </button>

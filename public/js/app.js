@@ -72606,8 +72606,9 @@ function LoginPage() {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
     email: "",
     password: "",
+    remember: false,
     waiting: false,
-    success: false
+    auth: false
   }),
       _useState2 = _slicedToArray(_useState, 2),
       values = _useState2[0],
@@ -72617,7 +72618,7 @@ function LoginPage() {
 
   var handleChange = function handleChange(prop) {
     return function (event) {
-      setValues(_objectSpread({}, values, _defineProperty({}, prop, event.target.value)));
+      setValues(_objectSpread({}, values, _defineProperty({}, prop, prop === "remember" ? event.target.checked : event.target.value)));
     };
   };
 
@@ -72633,23 +72634,18 @@ function LoginPage() {
         email: values.email,
         password: values.password
       }).then(function (res) {
-        console.log("res@login: ", res);
-
-        if (res.data === "Welcome") {
-          dispatch({
-            type: "SIGNIN"
-          });
-        } else {
-          alert(res.data);
-        }
-
-        setValues({
+        values.remember && localStorage.setItem("access_token", res.data.access_token);
+        dispatch({
+          type: "SIGNIN"
+        });
+        setValues(_objectSpread({}, values, {
           email: "",
           password: "",
           waiting: false,
-          success: res.data === "Welcome" && true
-        });
+          auth: true
+        }));
       })["catch"](function (err) {
+        alert("Your email or password was incorrect, please try again.");
         setValues(_objectSpread({}, values, {
           waiting: false
         }));
@@ -72758,7 +72754,9 @@ function LoginPage() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "checkbox",
     "class": "custom-control-input",
-    id: "customCheck1"
+    id: "customCheck1",
+    checked: values.remember,
+    onChange: handleChange("remember")
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     "class": "custom-control-label",
     "for": "customCheck1"
@@ -72774,7 +72772,7 @@ function LoginPage() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     "class": "sr-only"
-  }, "Loading...")), values.success && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
+  }, "Loading...")), values.auth && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
     to: "/todolist"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     style: {
@@ -72834,7 +72832,7 @@ function RegisterPage() {
     email: "",
     password: "",
     waiting: false,
-    success: false
+    auth: false
   }),
       _useState2 = _slicedToArray(_useState, 2),
       values = _useState2[0],
@@ -72865,12 +72863,13 @@ function RegisterPage() {
         email: values.email,
         password: values.password
       }).then(function (res) {
+        console.log("res@register: ", res);
         setValues({
           fullName: "",
           email: "",
           password: "",
           waiting: false,
-          success: true
+          auth: true
         });
       })["catch"](function (err) {
         alert(err);
@@ -73025,7 +73024,7 @@ function RegisterPage() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     "class": "sr-only"
-  }, "Loading...")), values.success && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
+  }, "Loading...")), values.auth && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
     to: "/todolist"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/signin",
