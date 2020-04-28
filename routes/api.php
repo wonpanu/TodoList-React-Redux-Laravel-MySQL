@@ -25,8 +25,6 @@ Route::post('register', 'AuthController@register');
 
 // User
 Route::get('user', 'AuthController@getAuthUser');
-// Route::put('user/update/{id}', 'UserController@update');
-// Route::delete('user/delete/{id}', 'UserController@delete');
 
 // Todo-list
 Route::get('tasks', 'TaskController@index');
