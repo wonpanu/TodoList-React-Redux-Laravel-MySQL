@@ -34,6 +34,10 @@ export default function RegisterPage() {
                     password: values.password
                 })
                 .then(res => {
+                    sessionStorage.setItem(
+                        "access_token",
+                        res.data.access_token
+                    );
                     console.log("res@register: ", res);
                     setValues({
                         fullName: "",

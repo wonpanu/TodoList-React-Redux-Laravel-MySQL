@@ -72863,6 +72863,7 @@ function RegisterPage() {
         email: values.email,
         password: values.password
       }).then(function (res) {
+        sessionStorage.setItem("access_token", res.data.access_token);
         console.log("res@register: ", res);
         setValues({
           fullName: "",
@@ -73262,13 +73263,17 @@ function TodoListPage() {
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
 
   var HandleClick = function HandleClick() {
-    axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("/api/logout").then(function (res) {
-      console.log("res@logout: ", res);
+    axios__WEBPACK_IMPORTED_MODULE_5___default.a.get("/api/logout", {
+      headers: {
+        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+      }
+    }).then(function (res) {
+      alert(res);
+      dispatch({
+        type: "SIGNOUT"
+      });
     })["catch"](function (err) {
-      console.log("err@logout: ", err);
-    });
-    dispatch({
-      type: "SIGNOUT"
+      alert(err);
     });
   };
 

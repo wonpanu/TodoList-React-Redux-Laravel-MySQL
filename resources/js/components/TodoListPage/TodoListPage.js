@@ -9,14 +9,20 @@ export default function TodoListPage() {
     const dispatch = useDispatch();
     const HandleClick = () => {
         axios
-            .post("/api/logout")
+            .get("/api/logout", {
+                headers: {
+                    Authorization: localStorage.getItem("access_token")
+                        ? `Bearer ${localStorage.getItem("access_token")}`
+                        : `Bearer ${sessionStorage.getItem("access_token")}`
+                }
+            })
             .then(res => {
-                console.log("res@logout: ", res);
+                alert(res);
+                dispatch({ type: "SIGNOUT" });
             })
             .catch(err => {
-                console.log("err@logout: ", err);
+                alert(err);
             });
-        dispatch({ type: "SIGNOUT" });
     };
 
     return (
