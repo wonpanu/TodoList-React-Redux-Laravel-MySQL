@@ -11,13 +11,13 @@ class RegistrationController extends Controller
     {
         $task = User::findOrFail($id);
         $task->update($request->all());
-        return "SUCCESS";
+        return response()->json(['message' => 'Update success']);
     }
 
     public function  delete(Request $request, $id)
     {
         $task = User::findOrFail($id);
         $task->delete();
-        return "SUCCESS";
+        return response()->json(['message' => 'Delete success']);
     }
 }

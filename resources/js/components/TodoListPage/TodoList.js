@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
@@ -7,19 +7,44 @@ export default function TodoList() {
     const todos = useSelector(state => state.todos);
 
     const HandleCompleted = (id, completed) => {
-        axios
-            .put(`/api/tasks/${id}`, { completed: !completed })
+        axios({
+            method: "PUT",
+            url: `/api/tasks/${id}`,
+            data: {
+                completed: !completed
+            },
+            headers: {
+                Authorization: localStorage.getItem("access_token")
+                    ? `Bearer ${localStorage.getItem("access_token")}`
+                    : `Bearer ${sessionStorage.getItem("access_token")}`
+            }
+        })
             .then(res => {
-                dispatch({ type: "TODO", payload: res.data });
+                if (res.data.message === "Permission denied") {
+                    alert(res.data.message);
+                } else {
+                    dispatch({ type: "TODO", payload: res.data });
+                }
             })
             .catch(err => console.log(err));
     };
 
     const HandleDelete = id => {
-        axios
-            .delete(`/api/tasks/${id}`)
+        axios({
+            method: "DELETE",
+            url: `/api/tasks/${id}`,
+            headers: {
+                Authorization: localStorage.getItem("access_token")
+                    ? `Bearer ${localStorage.getItem("access_token")}`
+                    : `Bearer ${sessionStorage.getItem("access_token")}`
+            }
+        })
             .then(res => {
-                dispatch({ type: "TODO", payload: res.data });
+                if (res.data.message === "Permission denied") {
+                    alert(res.data.message);
+                } else {
+                    dispatch({ type: "TODO", payload: res.data });
+                }
             })
             .catch(err => console.log(err));
     };

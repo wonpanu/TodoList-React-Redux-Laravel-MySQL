@@ -8,11 +8,19 @@ export default function AddTodo() {
 
     const HandleSubmit = e => {
         e.preventDefault();
+
         todo !== "" &&
-            axios
-                .post("/api/tasks", { title: todo })
+            axios({
+                method: "POST",
+                url: "/api/tasks",
+                data: { title: todo },
+                headers: {
+                    Authorization: localStorage.getItem("access_token")
+                        ? `Bearer ${localStorage.getItem("access_token")}`
+                        : `Bearer ${sessionStorage.getItem("access_token")}`
+                }
+            })
                 .then(res => {
-                    console.log(res.data);
                     dispatch({ type: "TODO", payload: res.data });
                 })
                 .catch(err => console.log(err));

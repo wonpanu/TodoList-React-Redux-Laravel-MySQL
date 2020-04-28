@@ -20,6 +20,8 @@ export default function TodoListPage() {
             .then(res => {
                 alert(res.data.message);
                 dispatch({ type: "SIGNOUT" });
+                localStorage.clear();
+                sessionStorage.clear();
             })
             .catch(err => {
                 alert(err);

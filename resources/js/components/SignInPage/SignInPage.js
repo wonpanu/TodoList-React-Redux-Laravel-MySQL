@@ -12,7 +12,6 @@ export default function LoginPage() {
         waiting: false,
         auth: false
     });
-    console.log("login: ", values);
 
     const handleChange = prop => event => {
         setValues({

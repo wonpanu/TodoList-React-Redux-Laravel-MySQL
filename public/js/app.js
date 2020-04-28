@@ -72614,8 +72614,6 @@ function LoginPage() {
       values = _useState2[0],
       setValues = _useState2[1];
 
-  console.log("login: ", values);
-
   var handleChange = function handleChange(prop) {
     return function (event) {
       setValues(_objectSpread({}, values, _defineProperty({}, prop, prop === "remember" ? event.target.checked : event.target.value)));
@@ -72838,8 +72836,6 @@ function RegisterPage() {
       values = _useState2[0],
       setValues = _useState2[1];
 
-  console.log("register: ", values);
-
   var handleChange = function handleChange(prop) {
     return function (event) {
       setValues(_objectSpread({}, values, _defineProperty({}, prop, event.target.value)));
@@ -72864,7 +72860,6 @@ function RegisterPage() {
         password: values.password
       }).then(function (res) {
         sessionStorage.setItem("access_token", res.data.access_token);
-        console.log("res@register: ", res);
         setValues({
           fullName: "",
           email: "",
@@ -73075,10 +73070,16 @@ function AddTodo() {
 
   var HandleSubmit = function HandleSubmit(e) {
     e.preventDefault();
-    todo !== "" && axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/tasks", {
-      title: todo
+    todo !== "" && axios__WEBPACK_IMPORTED_MODULE_2___default()({
+      method: "POST",
+      url: "/api/tasks",
+      data: {
+        title: todo
+      },
+      headers: {
+        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+      }
     }).then(function (res) {
-      console.log(res.data);
       dispatch({
         type: "TODO",
         payload: res.data
@@ -73143,24 +73144,45 @@ function TodoList() {
   });
 
   var HandleCompleted = function HandleCompleted(id, completed) {
-    axios__WEBPACK_IMPORTED_MODULE_2___default.a.put("/api/tasks/".concat(id), {
-      completed: !completed
+    axios__WEBPACK_IMPORTED_MODULE_2___default()({
+      method: "PUT",
+      url: "/api/tasks/".concat(id),
+      data: {
+        completed: !completed
+      },
+      headers: {
+        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+      }
     }).then(function (res) {
-      dispatch({
-        type: "TODO",
-        payload: res.data
-      });
+      if (res.data.message === "Permission denied") {
+        alert(res.data.message);
+      } else {
+        dispatch({
+          type: "TODO",
+          payload: res.data
+        });
+      }
     })["catch"](function (err) {
       return console.log(err);
     });
   };
 
   var HandleDelete = function HandleDelete(id) {
-    axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/api/tasks/".concat(id)).then(function (res) {
-      dispatch({
-        type: "TODO",
-        payload: res.data
-      });
+    axios__WEBPACK_IMPORTED_MODULE_2___default()({
+      method: "DELETE",
+      url: "/api/tasks/".concat(id),
+      headers: {
+        Authorization: localStorage.getItem("access_token") ? "Bearer ".concat(localStorage.getItem("access_token")) : "Bearer ".concat(sessionStorage.getItem("access_token"))
+      }
+    }).then(function (res) {
+      if (res.data.message === "Permission denied") {
+        alert(res.data.message);
+      } else {
+        dispatch({
+          type: "TODO",
+          payload: res.data
+        });
+      }
     })["catch"](function (err) {
       return console.log(err);
     });
@@ -73261,6 +73283,9 @@ __webpack_require__.r(__webpack_exports__);
 
 function TodoListPage() {
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
+  var auth = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
+    return state.auth;
+  });
 
   var HandleClick = function HandleClick() {
     axios__WEBPACK_IMPORTED_MODULE_5___default.a.get("/api/logout", {
@@ -73272,6 +73297,8 @@ function TodoListPage() {
       dispatch({
         type: "SIGNOUT"
       });
+      localStorage.clear();
+      sessionStorage.clear();
     })["catch"](function (err) {
       alert(err);
     });
@@ -73283,12 +73310,13 @@ function TodoListPage() {
       fontWeight: "bold"
     }
   }, "Todo list", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-    to: "/",
     style: {
       margin: 30
     },
     onClick: HandleClick
-  }, "logout")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, "logout", !auth && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
+    to: "/"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
       margin: "0% 0% 10% 10%"
     }
@@ -73314,7 +73342,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var initialState = {
-  auth: false,
+  auth:  false || localStorage.getItem("access_token"),
   todos: []
 };
 function rootReducer() {

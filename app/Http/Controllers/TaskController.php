@@ -19,10 +19,9 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $user = auth()->user();
         Task::create([
-            'todo' => $request->title,
-            'user_id' => $user->id,
+            'title' => $request->title,
+            'user_id' => auth()->id(),
         ]);
 
         return Task::all();
@@ -31,16 +30,22 @@ class TaskController extends Controller
     public function  update(Request $request, $id)
     {
         $task = Task::findOrFail($id);
-        $task->update($request->all());
-
-        return Task::all();
+        if ($task->user_id == auth()->id()) {
+            $task->update($request->all());
+            return Task::all();
+        } else {
+            return response()->json(['message' => 'Permission denied']);
+        }
     }
 
     public function  delete(Request $request, $id)
     {
         $task = Task::findOrFail($id);
-        $task->delete();
-
-        return Task::all();
+        if ($task->user_id == auth()->id()) {
+            $task->delete();
+            return Task::all();
+        } else {
+            return response()->json(['message' => 'Permission denied']);
+        }
     }
 }

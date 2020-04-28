@@ -12,7 +12,6 @@ export default function RegisterPage() {
         waiting: false,
         auth: false
     });
-    console.log("register: ", values);
 
     const handleChange = prop => event => {
         setValues({ ...values, [prop]: event.target.value });
@@ -38,7 +37,6 @@ export default function RegisterPage() {
                         "access_token",
                         res.data.access_token
                     );
-                    console.log("res@register: ", res);
                     setValues({
                         fullName: "",
                         email: "",
